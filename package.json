@@ -1,0 +1,32 @@
+{
+	"scripts": {
+		"build": "./node_modules/.bin/aureooms-node-package-build",
+		"doc": "./node_modules/.bin/groc",
+		"test": "./node_modules/.bin/aureooms-node-package-test"
+	},
+	"bugs": {
+		"url": "https://github.com/aureooms/js-matrix/issues"
+	},
+	"description": "matrices code bricks for JavaScript",
+	"repository": {
+		"url": "https://github.com/aureooms/js-matrix.git",
+		"type": "git"
+	},
+	"homepage": "http://aureooms.github.io/js-matrix/",
+	"main": "js/dist/matrix.js",
+	"name": "aureooms-js-matrix",
+	"devDependencies": {
+		"aureooms-node-package": "^1.0.0"
+	},
+	"keywords": [
+		"bricks",
+		"javascript",
+		"js",
+		"matrix",
+		"vector"
+	],
+	"license": "AGPL-3.0",
+	"version": "0.0.0",
+	"dependencies": {},
+	"author": "aureooms"
+}
