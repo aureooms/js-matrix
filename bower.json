@@ -15,5 +15,5 @@
 	],
 	"main": "js/dist/matrix.js",
 	"homepage": "http://aureooms.github.io/js-matrix/",
-	"version": "0.0.0"
+	"version": "0.0.1"
 }
