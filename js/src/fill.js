@@ -2,6 +2,13 @@
 
 /**
  * Matrix filler
+ *
+ * @param {Array} a matrix pointer
+ * @param {any} v value used to fill the matrix
+ * @param {int[]} args list of the size of the different dimensions
+ * @param {int} i current index in args
+ * @param {int} last last index to consider in args
+ *
  */
 
 
