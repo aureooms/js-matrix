@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><title>copy</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="copy"><meta name="groc-project-path" content="js/src/copy.js"><meta name="groc-github-url" content="https://github.com/aureooms/js-matrix"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/aureooms/js-matrix/blob/master/js/src/copy.js">js/src/copy.js</a></div></div><div id="document"><div class="segment"></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p>Matrix copy</p>
+<pre><code>      m = Amj - Ami, n = Anj - Ani
+      Bmj = Bmi + m, Bnj = Bni + n
+
+      A                           B</code></pre>
+<p>   Ani          Anj            Bni          Bnj
+ Ami . . . . . . ..          Bmi . . . . . . ..
+  .. . . . . . . ..           .. . . . . . . ..
+  .. . . . . . . ..    -&gt;     .. . . . . . . ..
+  .. . . . . . . ..           .. . . . . . . ..
+  .. . . . . . . ..           .. . . . . . . ..
+ Amj                         Bmj</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>A must be a matrix.</strong><br/>(matrix pointer)</p>
+</li>
+<li><p><strong>Ami must be a const index.</strong></p>
+</li>
+<li><p><strong>Amj must be a const index.</strong></p>
+</li>
+<li><p><strong>Ani must be a const index.</strong></p>
+</li>
+<li><p><strong>Anj must be a const index.</strong></p>
+</li>
+<li><p><strong>B must be a matrix.</strong><br/>(matrix pointer)</p>
+</li>
+<li><p><strong>Bmi must be a const index.</strong></p>
+</li>
+<li><p><strong>Bni must be a const index.</strong></p>
+</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> copy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( A, Ami, Amj, Ani, Anj, B, Bmi, Bni )</span> {</span>
+
+	<span class="hljs-keyword">var</span> m, n, r, c, Ar, Br;
+
+	m = Amj - Ami;
+	n = Anj - Ani;
+
+	<span class="hljs-keyword">for</span> ( r = <span class="hljs-number">0</span> ; r &lt; m ; ++r ) {
+
+		Ar = A[Ami + r];
+		Br = B[Bmi + r];
+
+		<span class="hljs-keyword">for</span> ( c = <span class="hljs-number">0</span> ; c &lt; n ; ++c ) {
+			Br[Bni + c] = Ar[Ani + c];
+		}
+
+	}
+
+};
+
+exports.copy = copy;</div></div></div></div></body></html>
