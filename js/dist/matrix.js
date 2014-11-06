@@ -3,125 +3,189 @@
 	'use strict';
 
 
-/* js/src/fill.js */
-
-
-/**
- * Matrix filler
- */
-
-
-var fill = function(a, v, args, i, last) {
-	var n, a, j;
-	n = args[i];
-
-	if (i === last) {
-		for (j = 0; j < n; ++j) {
-			a[j] = v;
-		}
-	}
-	else {
-		++i;
-		for (j = 0; j < n; ++j) {
-			fill(a, v, args, i, last);
-		}
-	}
-
-	return a;
-};
-
-exports.fill = fill;
-
-/* js/src/matrix.js */
+/* js/src/alloc.js */
 
 
 /**
  * Matrix builder
  *
- * @param {function} alloc the allocator function
+ * @param {allocator} rowalloc the row allocator function
  */
 
-var __matrix__ = function (alloc) {
+var __alloc__ = function ( rowalloc ) {
 
-	var wrap = function () {
 
-		if (arguments.length === 0) {
-			return null;
+	/**
+	 * @param  {const length} m the number of rows
+	 * @param  {const length} n the number of columns
+	 * @return {matrix}   the allocated matrix
+	 */
+	var alloc = function ( m, n ) {
+
+		var A, r;
+
+		A = new Array( m );
+
+		for ( r = 0 ; r < m ; ++r ) {
+			A[r] = rowalloc( n );
 		}
 
-		return matrix(arguments, 0, arguments.length - 1);
-
+		return A;
+		
 	};
 
-	var matrix = function(args, i, last) {
-		var n, a, j;
-		n = args[i];
-
-		if (i === last) {
-			return alloc(n);
-		}
-		else {
-			a = new Array(n);
-			++i;
-
-			for (j = 0; j < n; ++j) {
-				a[j] = matrix(args, i, last);
-			}
-		}
-
-		return a;
-	};
-
-	return wrap;
+	return alloc;
 };
 
-exports.__matrix__ = __matrix__;
+exports.__alloc__ = __alloc__;
 
-/* js/src/resolve.js */
+/* js/src/copy.js */
 
 
+/**
+ * Matrix copy
+ *
+ *           m = Amj - Ami, n = Anj - Ani
+ *           Bmj = Bmi + m, Bnj = Bni + n
+ *
+ *           A                           B
+ *
+ *    Ani          Anj            Bni          Bnj
+ *  Ami . . . . . . ..          Bmi . . . . . . ..
+ *   .. . . . . . . ..           .. . . . . . . ..
+ *   .. . . . . . . ..    ->     .. . . . . . . ..
+ *   .. . . . . . . ..           .. . . . . . . ..
+ *   .. . . . . . . ..           .. . . . . . . ..
+ *  Amj                         Bmj
+ *
+ *
+ *
+ * @param {matrix} A matrix pointer
+ * @param {const index} Ami
+ * @param {const index} Amj
+ * @param {const index} Ani
+ * @param {const index} Anj
+ * @param {matrix} B matrix pointer
+ * @param {const index} Bmi
+ * @param {const index} Bni
+ *
+ */
 
-var resolve = function (a, args) {
-	var i, len;
+var copy = function ( A, Ami, Amj, Ani, Anj, B, Bmi, Bni ) {
 
-	len = args.length;
+	var m, n, r, c, Ar, Br;
 
-	for (i = 1; i < len; ++i) {
-		a = a[args[i]];
+	m = Amj - Ami;
+	n = Anj - Ani;
+
+	for ( r = 0 ; r < m ; ++r ) {
+
+		Ar = A[Ami + r];
+		Br = B[Bmi + r];
+
+		for ( c = 0 ; c < n ; ++c ) {
+			Br[Bni + c] = Ar[Ani + c];
+		}
+
 	}
 
-	return a;
+};
+
+exports.copy = copy;
+
+/* js/src/fill.js */
+
+
+/**
+ * Matrix filler
+ *
+ *    ni           nj
+ *  mi v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  mj
+ *
+ * @param {matrix} A matrix pointer
+ * @param {any} v value used to fill the matrix
+ * @param {const index} mi
+ * @param {const index} mj
+ * @param {const index} ni
+ * @param {const index} nj
+ *
+ */
+
+
+var fill = function ( A, mi, mj, ni, nj, v ) {
+
+	var r, c, Ar;
+
+	for ( r = mi ; r < mj ; ++r ) {
+
+		Ar = A[r];
+
+		for ( c = ni ; c < nj ; ++c ) {
+			Ar[c] = v;
+		}
+
+	}
 
 };
 
-exports.resolve = resolve;
+exports.fill = fill;
 
 /* js/src/transpose.js */
 
 
 /**
- * Matrix transposer
- */
+* Matrix transposition
+*
+*           m = Amj - Ami, n = Anj - Ani
+*           Bmj = Bmi + n, Bnj = Bni + m
+*
+*           A                          B
+*
+*    Ani          Anj            Bni        Bnj
+*  Ami 1 2 . . . . ..          Bmi 1 3 . . . ..
+*   .. 3 . . . . . ..           .. 2 . . . . ..
+*   .. . . . . . . ..    ->     .. . . . . . ..
+*   .. . . . . . . ..           .. . . . . . ..
+*   .. . . . . . . ..           .. . . . . . ..
+*  Amj                          .. . . . . . ..
+*                              Bmj
+*
+*
+*
+* @param {matrix} A matrix pointer
+* @param {const index} Ami
+* @param {const index} Amj
+* @param {const index} Ani
+* @param {const index} Anj
+* @param {matrix} B matrix pointer
+* @param {const index} Bmi
+* @param {const index} Bni
+*
+*/
 
 
-var transpose = function(a, b, args, map, index, i, last) {
-	var n, a, j, k;
-	n = args[i];
-	k = map[i];
+var transpose = function ( A, Ami, Amj, Ani, Anj, B, Bmi, Bni ) {
 
-	if (i === last) {
-		for (j = 0; j < n; ++j) {
-			index[k] = j;
-			a[j] = resolve(b, index);
+	var m, n, r, c, Ar, Br;
+
+	m = Amj - Ami;
+	n = Anj - Ani;
+
+	for ( r = 0 ; r < m ; ++r ) {
+
+		Ar = A[Ami + r];
+
+		for ( c = 0 ; c < n ; ++c ) {
+			B[Bmi + c][Bni + r] = Ar[Ani + c];
 		}
+
 	}
-	else {
-		++i;
-		for (j = 0; j < n; ++j) {
-			index[k] = j;
-			transpose(a, b, args, map, index, i, last);
-		}
-	}
+
 };
 
 exports.transpose = transpose;
