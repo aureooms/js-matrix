@@ -16,7 +16,8 @@
 	"main": "js/dist/matrix.js",
 	"name": "aureooms-js-matrix",
 	"devDependencies": {
-		"aureooms-node-package": "^1.0.0"
+		"aureooms-node-package": "^1.0.0",
+		"aureooms-js-array": "^1.0.0"
 	},
 	"keywords": [
 		"bricks",
