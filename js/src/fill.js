@@ -3,32 +3,38 @@
 /**
  * Matrix filler
  *
- * @param {Array} a matrix pointer
+ *    ni           nj
+ *  mi v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  .. v v v v v v ..
+ *  mj
+ *
+ * @param {matrix} A matrix pointer
  * @param {any} v value used to fill the matrix
- * @param {int[]} args list of the size of the different dimensions
- * @param {int} i current index in args
- * @param {int} last last index to consider in args
+ * @param {const index} mi
+ * @param {const index} mj
+ * @param {const index} ni
+ * @param {const index} nj
  *
  */
 
 
-var fill = function(a, v, args, i, last) {
-	var n, a, j;
-	n = args[i];
+var fill = function ( A, mi, mj, ni, nj, v ) {
 
-	if (i === last) {
-		for (j = 0; j < n; ++j) {
-			a[j] = v;
+	var r, c, Ar;
+
+	for ( r = mi ; r < mj ; ++r ) {
+
+		Ar = A[r];
+
+		for ( c = ni ; c < nj ; ++c ) {
+			Ar[c] = v;
 		}
-	}
-	else {
-		++i;
-		for (j = 0; j < n; ++j) {
-			fill(a, v, args, i, last);
-		}
+
 	}
 
-	return a;
 };
 
 exports.fill = fill;
