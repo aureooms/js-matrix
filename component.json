@@ -1,0 +1,11 @@
+{
+	"description": "matrices code bricks for JavaScript",
+	"version": "1.0.0",
+	"repo": "aureooms/js-matrix",
+	"scripts": [
+		"js/dist/matrix.js"
+	],
+	"name": "aureooms-js-matrix",
+	"license": "AGPL-3.0",
+	"main": "js/dist/matrix.js"
+}
