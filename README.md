@@ -13,3 +13,4 @@ matrices code bricks for JavaScript
 [![Code Climate](http://img.shields.io/codeclimate/github/aureooms/js-matrix.svg?style=flat)](https://codeclimate.com/github/aureooms/js-matrix)
 [![NPM downloads per month](http://img.shields.io/npm/dm/aureooms-js-matrix.svg?style=flat)](https://www.npmjs.org/package/aureooms-js-matrix)
 [![GitHub issues](http://img.shields.io/github/issues/aureooms/js-matrix.svg?style=flat)](https://github.com/aureooms/js-matrix/issues)
+[![Inline docs](http://inch-ci.org/github/aureooms/js-matrix.svg?branch=master&style=shields)](http://inch-ci.org/github/aureooms/js-matrix)
