@@ -1,7 +1,7 @@
 
 var run, array, alloc;
 
-array = require( "aureooms-js-array" );
+array = require( "@aureooms/js-array" );
 
 alloc = matrix.__alloc__( array.alloc );
 
