@@ -1,4 +1,4 @@
-[js-matrix](http://aureooms.github.io/js-matrix)
+[js-matrix](http://make-github-pseudonymous-again.github.io/js-matrix)
 ==
 
 matrices code bricks for JavaScript

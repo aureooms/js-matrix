@@ -12,7 +12,7 @@
 		"url": "https://github.com/aureooms/js-matrix.git",
 		"type": "git"
 	},
-	"homepage": "http://aureooms.github.io/js-matrix/",
+	"homepage": "http://make-github-pseudonymous-again.github.io/js-matrix/",
 	"main": "js/dist/matrix.js",
 	"name": "@aureooms/js-matrix",
 	"devDependencies": {
